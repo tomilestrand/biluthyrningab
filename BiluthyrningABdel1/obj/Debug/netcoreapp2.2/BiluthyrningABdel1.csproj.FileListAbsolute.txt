@@ -1,0 +1,11 @@
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\obj\Debug\netcoreapp2.2\BiluthyrningABdel1.csprojAssemblyReference.cache
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\obj\Debug\netcoreapp2.2\BiluthyrningABdel1.csproj.CoreCompileInputs.cache
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\obj\Debug\netcoreapp2.2\BiluthyrningABdel1.AssemblyInfoInputs.cache
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\obj\Debug\netcoreapp2.2\BiluthyrningABdel1.AssemblyInfo.cs
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\bin\Debug\netcoreapp2.2\BiluthyrningABdel1.deps.json
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\bin\Debug\netcoreapp2.2\BiluthyrningABdel1.runtimeconfig.json
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\bin\Debug\netcoreapp2.2\BiluthyrningABdel1.runtimeconfig.dev.json
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\bin\Debug\netcoreapp2.2\BiluthyrningABdel1.dll
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\bin\Debug\netcoreapp2.2\BiluthyrningABdel1.pdb
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\obj\Debug\netcoreapp2.2\BiluthyrningABdel1.dll
+C:\Users\tomil\OneDrive\BiluthyrningAB\BiluthyrningABdel1\BiluthyrningABdel1\obj\Debug\netcoreapp2.2\BiluthyrningABdel1.pdb

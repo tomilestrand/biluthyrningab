@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiluthyrningABdel1", "BiluthyrningABdel1\BiluthyrningABdel1.csproj", "{06EA3900-C261-46EF-A1B1-AE894D9915D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiluthyrningABUI", "BiluthyrningABUI\BiluthyrningABUI.csproj", "{22AB925F-C84C-406F-875E-99B782527181}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06EA3900-C261-46EF-A1B1-AE894D9915D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06EA3900-C261-46EF-A1B1-AE894D9915D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06EA3900-C261-46EF-A1B1-AE894D9915D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06EA3900-C261-46EF-A1B1-AE894D9915D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22AB925F-C84C-406F-875E-99B782527181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22AB925F-C84C-406F-875E-99B782527181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22AB925F-C84C-406F-875E-99B782527181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22AB925F-C84C-406F-875E-99B782527181}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E100AAF-4372-4256-9853-792160CDEA8B}
+	EndGlobalSection
+EndGlobal

@@ -9,7 +9,7 @@ namespace BiluthyrningABUI
     {
         public static void StartScreen()
         {
-            char input = GetUserKeyInput("Tryck 1 för att hyra bil, tryck 2 för att lämna tillbaka en hyrd bil", new List<ConsoleKey> {ConsoleKey.D1, ConsoleKey.D2 });
+            char input = GetUserKeyInput("Tryck 1 för att hyra bil, tryck 2 för att lämna tillbaka en hyrd bil", new List<ConsoleKey> { ConsoleKey.D1, ConsoleKey.D2 });
             switch (input)
             {
                 case '1':
@@ -36,9 +36,17 @@ namespace BiluthyrningABUI
 
         private static void ReturnCar()
         {
-            int bookingId = GetUserNumberInput("Skriv in ditt bookningsnummer: ");
-            int newMilage = GetUserNumberInput("Skriv in bilens nuvarande km-antal: ");
-            Biluthyrning.ReturnCar(bookingId, newMilage);
+            int bookingId;
+            int newMilage;
+            string msg = "";
+            do
+            {
+                if (msg != "")
+                    Console.WriteLine(msg);
+                bookingId = GetUserNumberInput("Skriv in ditt bokningsnummer: ");
+                newMilage = GetUserNumberInput("Skriv in bilens nuvarande km-antal: ");
+            } while (!Biluthyrning.ReturnCar(bookingId, newMilage, out msg));
+            Console.WriteLine(msg);
         }
 
         private static int GetUserNumberInput(string query)
@@ -49,15 +57,15 @@ namespace BiluthyrningABUI
             {
                 Console.Write(query);
                 input = Console.ReadLine();
-            } while (!int.TryParse(input,out output));
+            } while (!int.TryParse(input, out output));
             return output;
         }
 
         private static void RentCar()
         {
-            char carType = GetUserKeyInput("Vilken typ av bil vill du hyra?\nTryck 1 för liten bil, tryck 2 för van, tryck 3 för minibuss", new List<ConsoleKey> { ConsoleKey.D1, ConsoleKey.D2,ConsoleKey.D3 });
+            char carType = GetUserKeyInput("Vilken typ av bil vill du hyra?\nTryck 1 för liten bil, tryck 2 för van, tryck 3 för minibuss", new List<ConsoleKey> { ConsoleKey.D1, ConsoleKey.D2, ConsoleKey.D3 });
             string SSN = GetUserSSN("Skriv in ditt personnummer (YYYYMMDD-XXXX): ");
-            Biluthyrning.RentCar(int.Parse(carType.ToString()),SSN);
+            Biluthyrning.RentCar(int.Parse(carType.ToString()), SSN);
         }
 
         private static string GetUserSSN(string query)
@@ -67,7 +75,7 @@ namespace BiluthyrningABUI
             {
                 Console.Write(query);
                 input = Console.ReadLine();
-            } while (string.IsNullOrWhiteSpace(input) || !Biluthyrning.ValidSSN(input));
+            } while (!Biluthyrning.ValidSSN(input));
             return input;
         }
 

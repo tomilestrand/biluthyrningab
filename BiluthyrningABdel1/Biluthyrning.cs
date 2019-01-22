@@ -19,7 +19,7 @@ namespace BiluthyrningABdel1
             new Car{CarType = 1, NumOfKm = 12000, RegNum = "LTN123"},
             new Car{CarType = 2, NumOfKm = 5500, RegNum = "VAN123"},
             new Car{CarType = 3, NumOfKm = 4000, RegNum = "MBS123"},
-    };
+            };
         /// <summary>
         /// typeCar = 1 - small car, typeCar = 2 - Van, typeCar = 3 - Minibus
         /// Returns negative values for invalid types
@@ -73,15 +73,26 @@ namespace BiluthyrningABdel1
         {
             var car = cars.Single(c => c.CarType == typeCar);
             int? carId = AddToDb<CarBooking>(new CarBooking { CarType = typeCar, NumberOfKmStart = car.NumOfKm, CarRegistrationNumber = car.RegNum, SSN = SSN, StartTime = DateTime.Now.Date });
-            Console.WriteLine($"Tack för att du hyr hos oss ditt bookningsnummer är {carId}");
+            Console.WriteLine($"Tack för att du hyr hos oss, ditt bookningsnummer är {carId}");
         }
 
-        public static void ReturnCar(int bookingId, int newMilage)
+        public static bool ReturnCar(int bookingId, int newMilage, out string msg)
         {
+            msg = "";
             CarBooking booking = ReadDb<CarBooking>(bookingId, bookingFunc);
-            decimal totalCost = CarCost((DateTime.Now.Date.Ticks - booking.StartTime.Date.Ticks)/TimeSpan.TicksPerDay, newMilage - booking.NumberOfKmStart, booking.CarType);
-            AddToDb<CarReturn>(new CarReturn { CarbookingId = bookingId, NumberOfKmReturn = newMilage, ReturnTime = DateTime.Now.Date });
-            Console.WriteLine($"Den total kostnaden blir {totalCost}kr");
+            if (booking == null)
+            {
+                msg = "Bokningen hittades inte";
+                return false;
+            }
+            decimal totalCost = CarCost((DateTime.Now.Date.Ticks - booking.StartTime.Date.Ticks) / TimeSpan.TicksPerDay, newMilage - booking.NumberOfKmStart, booking.CarType);
+            if (AddToDb<CarReturn>(new CarReturn { CarbookingId = bookingId, NumberOfKmReturn = newMilage, ReturnTime = DateTime.Now.Date }) == -1)
+            {
+                msg = "Returneringen kunde inte lägges till i databasen";
+                return false;
+            }
+            msg = $"Den total kostnaden blir {totalCost}kr";
+            return true;
         }
 
         private static int? AddToDb<T>(T model)
@@ -129,43 +140,43 @@ namespace BiluthyrningABdel1
 
         private static T ReadDb<T>(int id, Func<SqlDataReader, T> func)
         {
-                try
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connString))
                 {
-                    using (SqlConnection connection = new SqlConnection(connString))
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand())
                     {
-                        connection.Open();
-                        using (SqlCommand command = new SqlCommand())
+                        command.CommandText = $"select * from {typeof(T).Name} where id=@id";
+                        command.CommandType = CommandType.Text;
+                        command.Connection = connection;
+
+                        var idParam = command.CreateParameter();
+                        idParam.ParameterName = "@id";
+                        idParam.Value = id;
+                        command.Parameters.Add(idParam);
+
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.Read())
                         {
-                            command.CommandText = $"select * from {typeof(T).Name} where id=@id";
-                            command.CommandType = CommandType.Text;
-                            command.Connection = connection;
-
-                            var idParam = command.CreateParameter();
-                            idParam.ParameterName = "@id";
-                            idParam.Value = id;
-                            command.Parameters.Add(idParam);
-
-                            SqlDataReader reader = command.ExecuteReader();
-
-                            if (reader.Read())
+                            var outId = reader[0];
+                            if (outId != null)
                             {
-                                var outId = reader[0];
-                                if (outId != null)
-                                {
-                                    return func(reader);
-                                }
+                                return func(reader);
                             }
-                            else
-                                connection.Close();
-                            return default;
                         }
+                        else
+                            connection.Close();
+                        return default;
                     }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    return default;
-                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return default;
+            }
+        }
     }
 }

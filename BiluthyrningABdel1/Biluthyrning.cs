@@ -69,11 +69,23 @@ namespace BiluthyrningABdel1
             return input.Length == 13 && input[8] == '-' && input.Substring(0, 8).All(char.IsDigit) && input.Substring(9, 4).All(char.IsDigit);
         }
 
-        public static void RentCar(int typeCar, string SSN)
+        public static bool RentCar(int typeCar, string SSN, out string msg)
         {
-            var car = cars.Single(c => c.CarType == typeCar);
+            msg = "";
+            var car = cars.SingleOrDefault(c => c.CarType == typeCar);
+            if (car == null)
+            {
+                msg = "Ingen tillgänglig bil av den typen hittades";
+                return false;
+            }
             int? carId = AddToDb<CarBooking>(new CarBooking { CarType = typeCar, NumberOfKmStart = car.NumOfKm, CarRegistrationNumber = car.RegNum, SSN = SSN, StartTime = DateTime.Now.Date });
-            Console.WriteLine($"Tack för att du hyr hos oss, ditt bookningsnummer är {carId}");
+            if (carId == null || carId == -1)
+            {
+                msg = "Uthyrningen kunde inte läggas till i databasen";
+                return false;
+            }
+            msg = $"Tack för att du hyr hos oss, ditt bookningsnummer är {carId}";
+            return true;
         }
 
         public static bool ReturnCar(int bookingId, int newMilage, out string msg)
@@ -162,9 +174,7 @@ namespace BiluthyrningABdel1
                         {
                             var outId = reader[0];
                             if (outId != null)
-                            {
                                 return func(reader);
-                            }
                         }
                         else
                             connection.Close();

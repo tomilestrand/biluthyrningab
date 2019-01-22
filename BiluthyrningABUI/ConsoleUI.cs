@@ -56,18 +56,29 @@ namespace BiluthyrningABUI
         private static void RentCar()
         {
             char carType = GetUserKeyInput("Vilken typ av bil vill du hyra?\nTryck 1 för liten bil, tryck 2 för van, tryck 3 för minibuss", new List<ConsoleKey> { ConsoleKey.D1, ConsoleKey.D2,ConsoleKey.D3 });
-            string SSN = GetUserLineInput("Skriv in ditt personnummer (YYYYMMDD-XXXX): ",13);
+            string SSN = GetUserSSN("Skriv in ditt personnummer (YYYYMMDD-XXXX): ");
             Biluthyrning.RentCar(int.Parse(carType.ToString()),SSN);
         }
 
-        private static string GetUserLineInput(string query, int maxLength = int.MaxValue)
+        private static string GetUserSSN(string query)
         {
             string input;
             do
             {
                 Console.Write(query);
                 input = Console.ReadLine();
-            } while (input.Length < maxLength);
+            } while (string.IsNullOrWhiteSpace(input) || !Biluthyrning.ValidSSN(input));
+            return input;
+        }
+
+        private static string GetUserLineInput(string query)
+        {
+            string input;
+            do
+            {
+                Console.Write(query);
+                input = Console.ReadLine();
+            } while (string.IsNullOrWhiteSpace(input));
             return input;
         }
     }

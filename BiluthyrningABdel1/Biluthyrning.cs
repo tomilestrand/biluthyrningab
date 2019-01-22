@@ -64,6 +64,11 @@ namespace BiluthyrningABdel1
             }
         }
 
+        public static bool ValidSSN(string input)
+        {
+            return input.Length == 13 && input[8] == '-' && input.Substring(0, 8).All(char.IsDigit) && input.Substring(9, 4).All(char.IsDigit);
+        }
+
         public static void RentCar(int typeCar, string SSN)
         {
             var car = cars.Single(c => c.CarType == typeCar);

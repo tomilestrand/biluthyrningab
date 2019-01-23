@@ -10,7 +10,7 @@ namespace BiluthyrningABdel1
     public static class Biluthyrning
     {
         private const string connString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BiluthyrningAB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        private static Func<SqlDataReader, CarBooking> readBookingFunc = (c) => (new CarBooking { Id = (int)c[0], SSN = (string)c[1], CarType = (int)c[2], CarRegistrationNumber = (string)c[3], StartTime = (DateTime)c[4], NumberOfKmStart = (int)c[5] });
+        private static readonly Func<SqlDataReader, CarBooking> readBookingFunc = (c) => (new CarBooking { Id = (int)c[0], SSN = (string)c[1], CarType = (int)c[2], CarRegistrationNumber = (string)c[3], StartTime = (DateTime)c[4], NumberOfKmStart = (int)c[5] });
 
         const decimal baseDayRental = 500;
         const decimal kmPrice = 20;
@@ -142,7 +142,7 @@ namespace BiluthyrningABdel1
                     }
                     connection.Close();
                 }
-                return -2;
+                return -1;
             }
             catch (Exception e)
             {

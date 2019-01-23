@@ -10,7 +10,7 @@ namespace BiluthyrningABdel1
     public static class Biluthyrning
     {
         private const string connString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BiluthyrningAB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        private static Func<SqlDataReader, CarBooking> bookingFunc = (c) => (new CarBooking { Id = (int)c[0], SSN = (string)c[1], CarType = (int)c[2], CarRegistrationNumber = (string)c[3], StartTime = (DateTime)c[4], NumberOfKmStart = (int)c[5] });
+        private static Func<SqlDataReader, CarBooking> readBookingFunc = (c) => (new CarBooking { Id = (int)c[0], SSN = (string)c[1], CarType = (int)c[2], CarRegistrationNumber = (string)c[3], StartTime = (DateTime)c[4], NumberOfKmStart = (int)c[5] });
 
         const decimal baseDayRental = 500;
         const decimal kmPrice = 20;
@@ -71,18 +71,27 @@ namespace BiluthyrningABdel1
 
         public static void RentCar(int typeCar, string SSN)
         {
-            var car = cars.Single(c => c.CarType == typeCar);
+            var car = cars.SingleOrDefault(c => c.CarType == typeCar);
+            if (car == null)
+                return;
             int? carId = AddToDb<CarBooking>(new CarBooking { CarType = typeCar, NumberOfKmStart = car.NumOfKm, CarRegistrationNumber = car.RegNum, SSN = SSN, StartTime = DateTime.Now.Date });
+            if (carId < 1)
+                Console.WriteLine($"Något gick fel, felkod: {-carId}");
             Console.WriteLine($"Tack för att du hyr hos oss, ditt bookningsnummer är {carId}");
         }
 
         public static bool ReturnCar(int bookingId, int newMilage, out string msg)
         {
             msg = "";
-            CarBooking booking = ReadDb<CarBooking>(bookingId, bookingFunc);
+            CarBooking booking = ReadDb<CarBooking>(bookingId, readBookingFunc);
             if (booking == null)
             {
                 msg = "Bokningen hittades inte";
+                return false;
+            }
+            else if (booking.NumberOfKmStart < newMilage)
+            {
+                msg = "Det inmatade km-antalet är lägre än vid utlämning";
                 return false;
             }
             decimal totalCost = CarCost((DateTime.Now.Date.Ticks - booking.StartTime.Date.Ticks) / TimeSpan.TicksPerDay, newMilage - booking.NumberOfKmStart, booking.CarType);
@@ -108,9 +117,7 @@ namespace BiluthyrningABdel1
                         foreach (var item in model.GetType().GetProperties())
                         {
                             if (item.Name != "Id")
-                            {
                                 commandText.Append($"@{item.Name}, ");
-                            }
                         }
                         commandText.Remove(commandText.Length - 2, 2);
                         commandText.Append($") select top 1 id from {typeof(T).Name} order by id desc");
@@ -123,13 +130,11 @@ namespace BiluthyrningABdel1
                         }
                         SqlDataReader reader = command.ExecuteReader();
                         if (reader.Read())
-                        {
                             return reader[0] as int?;
-                        }
                     }
                     connection.Close();
                 }
-                return 0;
+                return -2;
             }
             catch (Exception e)
             {
@@ -162,9 +167,7 @@ namespace BiluthyrningABdel1
                         {
                             var outId = reader[0];
                             if (outId != null)
-                            {
                                 return func(reader);
-                            }
                         }
                         else
                             connection.Close();

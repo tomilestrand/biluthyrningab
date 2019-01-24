@@ -84,7 +84,7 @@ namespace BiluthyrningABdel1
                 msg = "Uthyrningen kunde inte läggas till i databasen";
                 return false;
             }
-            msg = $"Tack för att du hyr hos oss, ditt bookningsnummer är {carId}";
+            msg = $"Tack för att du hyr hos oss, ditt bookningsnummer är: {carId}, din bokade {typeCar} har registreringnummer: {car.RegNum}";
             return true;
         }
 
